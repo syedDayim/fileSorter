@@ -1,16 +1,9 @@
 # Advanced File Sorter Requirements
-# All dependencies are built-in Python modules, no external packages required
+# Core dependencies for building executable
 
-# Built-in modules used:
-# - tkinter (GUI framework)
-# - os (file system operations)
-# - shutil (file operations)
-# - pathlib (path handling)
-# - threading (background operations)
-# - time (timing)
-# - datetime (timestamping)
-# - json (settings storage)
+# For creating executable
+pyinstaller>=5.0
 
-# Optional: For enhanced functionality, you could install:
-# - pillow (for image previews): pip install pillow
-# - psutil (for system monitoring): pip install psutil
+# Optional enhancements (uncomment if needed)
+# pillow>=9.0.0  # For image previews
+# psutil>=5.9.0  # For system monitoring

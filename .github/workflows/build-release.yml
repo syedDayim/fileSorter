@@ -1,0 +1,79 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    - name: Build executable
+      run: |
+        python build_exe.py
+        
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: AdvancedFileSorter-Windows
+        path: dist/
+        
+    - name: Create Release
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          dist/AdvancedFileSorter.exe
+          dist/README.txt
+        body: |
+          # Advanced File Sorter v${{ github.ref_name }}
+          
+          ## 🚀 What's New
+          - Advanced file sorting with GUI
+          - Preview mode for safe sorting
+          - Undo functionality
+          - Customizable file type mappings
+          
+          ## 📦 Installation
+          1. Download `AdvancedFileSorter.exe`
+          2. Run the executable
+          3. No installation required!
+          
+          ## 🎯 Features
+          - **Smart Sorting**: Automatically categorizes files
+          - **Preview Mode**: See what will be moved before sorting
+          - **Undo Support**: Reverse operations if needed
+          - **Custom Settings**: Configure file type mappings
+          - **Safe Operation**: Handles duplicates and conflicts
+          
+          ## 📋 System Requirements
+          - Windows 10/11
+          - No additional software required
+          
+          ## 👨‍💻 Developer
+          Created by **Syed Dayim**
+          - 📧 Email: dayim1277@gmail.com
+          - 🐙 GitHub: [github.com/syedDayim](https://github.com/syedDayim)
+          
+          ## 🐛 Issues & Support
+          Report issues at: https://github.com/syedDayim/advanced-file-sorter/issues
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
